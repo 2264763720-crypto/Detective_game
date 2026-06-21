@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雨夜密室杀人案 - 侦探推理游戏</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header id="topbar">
+        <div class="topbar-inner">
+            <div class="logo">
+                <span class="logo-icon">🔍</span>
+                <span class="logo-text">雨夜密室杀人案</span>
+            </div>
+            <div class="topbar-actions">
+                <button class="top-btn" onclick="showSuspects()" title="查看嫌疑人档案">
+                    <span class="btn-icon">📁</span> 嫌疑人档案
+                </button>
+                <button class="top-btn" onclick="restartGame()" title="重新开始调查">
+                    <span class="btn-icon">🔄</span> 重新开始
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主布局：左场景 + 右状态 -->
+    <div class="main-layout">
+        <!-- 左侧：场景内容区 -->
+        <div class="left-panel">
+            <!-- 场景卡片 -->
+            <div id="scene-card" class="scene-card">
+                <div class="scene-header">
+                    <span class="scene-location" id="scene-location">陈氏豪宅·大厅</span>
+                    <span class="scene-atmo" id="scene-atmosphere">紧张</span>
+                </div>
+                <div class="scene-body">
+                    <div class="scene-text" id="scene-description"></div>
+                </div>
+                <div class="scene-divider"></div>
+            </div>
+
+            <!-- 选项区 -->
+            <div id="choices-area" class="choices-area">
+                <div class="choices-title">📋 请选择你的行动</div>
+                <div id="choices-container"></div>
+            </div>
+        </div>
+
+        <!-- 右侧：状态面板 -->
+        <div class="right-panel">
+            <!-- 侦探身份卡 -->
+            <div class="identity-card">
+                <div class="avatar">🕵️</div>
+                <div class="detective-name">警探 林正</div>
+                <div class="detective-badge">重案组</div>
+            </div>
+
+            <!-- 生命值 -->
+            <div class="stat-block">
+                <div class="stat-label">
+                    <span>❤️ 生命值</span>
+                    <span class="stat-val" id="hp-text">100/100</span>
+                </div>
+                <div class="hp-bar-outer">
+                    <div class="hp-bar-inner" id="hp-bar"></div>
+                    <div class="hp-bar-glow" id="hp-glow"></div>
+                </div>
+            </div>
+
+            <!-- 线索点数 -->
+            <div class="stat-block">
+                <div class="stat-label">
+                    <span>🔍 线索点数</span>
+                    <span class="stat-val clue-val" id="clue-text">0</span>
+                </div>
+                <div class="clue-meter">
+                    <div class="clue-fill" id="clue-fill"></div>
+                </div>
+            </div>
+
+            <!-- 已用时间 -->
+            <div class="stat-block">
+                <div class="stat-label">
+                    <span>⏱️ 调查时间</span>
+                    <span class="stat-val time-val" id="time-text">00:00</span>
+                </div>
+                <div class="time-pulse" id="time-pulse"></div>
+            </div>
+
+            <!-- 持有道具 -->
+            <div class="stat-block">
+                <div class="stat-label">🎒 持有道具</div>
+                <div id="items-container" class="items-list">
+                    <span class="no-items">— 暂无道具 —</span>
+                </div>
+            </div>
+
+            <!-- 嫌疑人信任度 -->
+            <div class="stat-block">
+                <div class="stat-label">👥 嫌疑人信任度</div>
+                <div id="trust-container" class="trust-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 嫌疑人档案弹窗 -->
+    <div id="suspect-modal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-head">
+                <h2>📁 嫌疑人档案</h2>
+                <button class="modal-x" onclick="closeSuspectModal()">✕</button>
+            </div>
+            <div class="modal-body" id="suspect-list"></div>
+        </div>
+    </div>
+
+    <!-- 指认弹窗 -->
+    <div id="accuse-modal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-head">
+                <h2>⚖️ 最终指认</h2>
+            </div>
+            <div class="modal-body">
+                <div id="accuse-intro" class="accuse-intro"></div>
+                <div id="accuse-list" class="accuse-list"></div>
+                <div id="accuse-hint" class="accuse-hint"></div>
+                <div class="accuse-btns">
+                    <button class="modal-btn primary" onclick="submitAccusation()">🔒 确认指认</button>
+                    <button class="modal-btn" onclick="skipAccusation()">暂不指认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结局弹窗 -->
+    <div id="ending-modal" class="modal-overlay">
+        <div class="modal-dialog ending-dialog">
+            <div class="modal-body ending-body">
+                <div id="ending-type" class="ending-badge"></div>
+                <div id="ending-description" class="ending-text"></div>
+                <div id="ending-summary" class="ending-summary"></div>
+                <button class="modal-btn primary" onclick="restartGame()" style="width:100%;margin-top:16px">🔄 重新调查</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="story.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
